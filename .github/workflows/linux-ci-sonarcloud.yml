@@ -97,6 +97,7 @@ jobs:
           tools/coverage sonar
 
       - name: SonarCloud Scan
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         run: |
           ./tools/sonarcloud-analysis
         env:
