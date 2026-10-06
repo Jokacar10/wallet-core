@@ -96,7 +96,17 @@ jobs:
         run: |
           tools/coverage sonar
 
+      - name: Check SonarCloud token
+        id: sonar_token
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if [[ -n "$SONAR_TOKEN" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: SonarCloud Scan
+        if: steps.sonar_token.outputs.available == 'true'
         run: |
           ./tools/sonarcloud-analysis
         env:
